@@ -1,16 +1,9 @@
+var express = require('express');
 var mongoose = require('mongoose');
 var api = require('./api/api.js');
-
+var bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
-
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/'));
 var router = express.Router();
@@ -47,11 +40,11 @@ router.delete('/users/:id', function(req, res) {
 });
 
 router.put('/users/:id', function(req, res){
-    console.log("req.params._id" + req.params.id);
+    console.log("req.params._id" + req.body.id);
     console.log("req.body" + req.body);
     var id = req.params.id;
     var user = req.body;
-    api.updateUser(id,user);
+    api.updateUser(id,req.body);
 });
 
 app.listen(process.env.PORT || PORT, function (){
